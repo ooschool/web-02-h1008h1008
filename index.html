@@ -2,15 +2,18 @@
 <html>
     <head>
         <style>
-        body {
-            background-color: #f2f2f2; /* 灰色背景颜色 */
-            display: flex;
-            justify-content: center;
-            height: 100vh;
-        }
-        .BagArea {
-            border-left: 4px solid rgb(156, 155, 155);
-            padding-left: 10px; /* 添加一些左边距以与内容分隔开 */
+          body {
+              background-color: #f2f2f2; /* 灰色背景颜色 */
+              display: flex;
+              justify-content: center;
+              height: 100vh;
+          }
+          .BagArea {
+              border-left: 4px solid rgb(156, 155, 155);
+              padding-left: 10px; /* 添加一些左边距以与内容分隔开 */
+          }
+          .Navbar {
+            transition: width 0.3s; /* 添加过渡效果 */
           }
           .center {
             display: flex;
@@ -40,10 +43,23 @@
           }
         </style>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+          let isExpanded = false;
+          document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.MenuIcon').addEventListener('click', function () {
+              if (isExpanded) {
+                document.querySelector('.Navbar').style.width = '4rem'; // 将宽度设置为初始宽度
+              } else {
+                document.querySelector('.Navbar').style.width = '16rem'; // 将宽度扩展
+              }
+              isExpanded = !isExpanded;
+            });
+          });
+        </script>
     </head>
     <body>
         <div class="Navbar w-16 h-screen p-2 bg-white rounded-lg flex-col justify-between items-center gap-2.5 inline-flex">
-            <div class="NavLinksTop p-2 flex-col justify-center items-center gap-8 flex">
+            <div class="NavLinksTop p-2 flex-col justify-center gap-8 flex">
               <div class="Logo p-2 bg-white rounded justify-center items-center inline-flex">
                 <div class="Group1 w-4 h-5 relative">
                   <img class="Union w-2.5 h-1.5 left-[5.59px] top-0 absolute" src="https://via.placeholder.com/9x6" />
@@ -110,8 +126,8 @@
               </div>
             </div>
             <div class="ContentArea self-stretch h-96 py-2 flex-col justify-start items-center flex">
-              <div class="Row01 self-stretch justify-center items-center gap-4 inline-flex">
-                <div class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
+              <ul class="Row01 self-stretch justify-center items-center gap-4 inline-flex flex-wrap">
+                <li class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
                   <a href="./product.html">
                     <div class="ProductImage w-48 p-4 bg-white rounded-3xl justify-center items-center inline-flex">
                       <div class="ProductImage w-40 h-48 flex-col justify-center items-center inline-flex">
@@ -136,8 +152,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
+                </li>
+                <li class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
                   <div class="ProductImage w-48 p-4 bg-white rounded-3xl justify-center items-center inline-flex">
                     <div class="ProductImage w-40 h-48 flex-col justify-center items-center inline-flex">
                       <img class="Image w-40 h-48" src="https://via.placeholder.com/159x200" />
@@ -153,8 +169,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
+                </li>
+                <li class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
                   <div class="ProductImage w-48 p-4 bg-white rounded-3xl justify-center items-center inline-flex">
                     <div class="ProductImage w-40 h-48 flex-col justify-center items-center inline-flex">
                       <img class="Image w-40 h-48" src="https://via.placeholder.com/159x200" />
@@ -170,8 +186,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
+                </li>
+                <li class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
                   <div class="ProductImage w-48 p-4 bg-white rounded-3xl justify-center items-center inline-flex">
                     <div class="ProductImage w-40 h-48 flex-col justify-center items-center inline-flex">
                       <img class="Image w-40 h-48" src="https://via.placeholder.com/159x200" />
@@ -187,8 +203,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </li>
+              </ul>
             </div>
           </div>
           <div class="BagArea w-80 h-screen px-2 pt-16 pb-2 flex-col justify-start items-center gap-2.5 inline-flex">
