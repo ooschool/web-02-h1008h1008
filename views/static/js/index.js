@@ -7,7 +7,7 @@ Handlebars.registerHelper('eq', function(arg1, arg2, options) {
       // Sample data for product cards
       const productDatalist = [
         {
-          productLink: "./product.html",
+          productLink: "./product",
           imageUrl: "https://via.placeholder.com/159x200",
           imageUrlsquare: "https://via.placeholder.com/64x64",
           productName: "Product 1",
@@ -20,7 +20,7 @@ Handlebars.registerHelper('eq', function(arg1, arg2, options) {
           productindex: "0",
         },
         {
-          productLink: "./product.html",
+          productLink: "./product",
           imageUrl: "https://via.placeholder.com/159x200",
           imageUrlsquare: "https://via.placeholder.com/64x64",
           productName: "Product 1",
@@ -33,7 +33,7 @@ Handlebars.registerHelper('eq', function(arg1, arg2, options) {
           productindex: "1",
         },
         {
-          productLink: "./product.html",
+          productLink: "./product",
           imageUrl: "https://via.placeholder.com/159x200",
           imageUrlsquare: "https://via.placeholder.com/64x64",
           productName: "Product 1",
@@ -46,7 +46,7 @@ Handlebars.registerHelper('eq', function(arg1, arg2, options) {
           productindex: "1",
         },
         {
-          productLink: "./product.html",
+          productLink: "./product",
           imageUrl: "https://via.placeholder.com/159x200",
           imageUrlsquare: "https://via.placeholder.com/64x64",
           productName: "Product 1",
@@ -59,7 +59,7 @@ Handlebars.registerHelper('eq', function(arg1, arg2, options) {
           productindex: "1",
         },
         {
-          productLink: "./product.html",
+          productLink: "./product",
           imageUrl: "https://via.placeholder.com/159x200",
           imageUrlsquare: "https://via.placeholder.com/64x64",
           productName: "Product 1",
@@ -72,7 +72,7 @@ Handlebars.registerHelper('eq', function(arg1, arg2, options) {
           productindex: "1",
         },
         {
-          productLink: "./product.html",
+          productLink: "./product",
           imageUrl: "https://via.placeholder.com/159x200",
           imageUrlsquare: "https://via.placeholder.com/64x64",
           productName: "Product 1",
@@ -85,7 +85,7 @@ Handlebars.registerHelper('eq', function(arg1, arg2, options) {
           productindex: "1",
         },
         {
-          productLink: "./product.html",
+          productLink: "./product",
           imageUrl: "https://via.placeholder.com/159x200",
           imageUrlsquare: "https://via.placeholder.com/64x64",
           productName: "Product 1",
