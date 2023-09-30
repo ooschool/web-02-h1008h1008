@@ -1,0 +1,25 @@
+{
+  "name": "web-02-h1008h1008",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ooschool/web-02-h1008h1008.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ooschool/web-02-h1008h1008/issues"
+  },
+  "homepage": "https://github.com/ooschool/web-02-h1008h1008#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2"
+  }
+}

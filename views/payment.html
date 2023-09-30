@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="..\static\css\payment.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+      <div class="Wrapper">
+        <div class="ContentFrame p-6 flex-col justify-start items-start gap-6 inline-flex w-3/7 ml-36 mt-4">
+            <div class="AddressCard w-full h-80 p-4 border border-black bg-white rounded-xl flex-col justify-start items-start gap-2 flex">
+              <div class="Header p-2 justify-start items-start inline-flex">
+                <div class="ShippingAddress text-stone-900 text-3xl font-normal font-['Cabin'] uppercase tracking-widest">Shipping Address</div>
+              </div>
+              <div class="Conent self-stretch justify-between items-start inline-flex">
+                <div class="CurrentAddress p-2 flex-col justify-start items-start gap-2 inline-flex">
+                  <div class="Name w-96 h-24 p-2 flex-col justify-start items-start gap-2.5 inline-flex">
+                    <div class="Input self-stretch h-20 flex-col justify-center items-start gap-2 flex">
+                      <div class="Label px-2 justify-start items-center gap-2.5 inline-flex">
+                        <div class="Label text-stone-900 text-opacity-50 text-base font-normal font-['Cabin']">Shipping Name</div>
+                      </div>
+                      <input class="InputField self-stretch px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" type="text" placeholder="John Maker">
+                    </div>
+                  </div>
+                  <div class="Input w-full h-20 flex-col justify-center items-start gap-2 inline-flex">
+                    <div class="Label px-2 justify-start items-center gap-2.5 inline-flex">
+                      <div class="Label text-stone-900 text-opacity-50 text-base font-normal font-['Cabin']">Address</div>
+                    </div>
+                    <input class="InputField self-stretch px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" type="text" placeholder="123 Plae Grond Stret Vermont, California United States of America">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Form self-stretch p-8 border border-black bg-white rounded-2xl flex-col gap-4 inline-flex">
+              <div class="Header self-stretch p-2 justify-start items-start gap-2 inline-flex">
+                <div class="AddANewCard text-stone-900 text-3xl font-normal font-['Cabin'] uppercase tracking-widest">Credit Card</div>
+              </div>
+              <div class="Name self-stretch h-24 p-2 flex-col justify-start items-start gap-2.5 flex">
+                <div class="Input self-stretch h-20 flex-col justify-center items-start gap-2 flex">
+                  <div class="Label px-2 justify-start items-center gap-2.5 inline-flex">
+                    <div class="Label text-stone-900 text-opacity-50 text-base font-normal font-['Cabin']">Cardholder Name</div>
+                  </div>
+                  <input class="InputField w-96 self-stretch px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" type="text" placeholder="John Maker">
+                </div>
+              </div>
+              <div class="Cardnumber self-stretch h-24 p-2 flex-col justify-start items-start gap-2.5 flex">
+                <div class="Input self-stretch h-20 flex-col justify-center items-start gap-2 flex">
+                  <div class="Label px-2 justify-start items-center gap-2.5 inline-flex">
+                    <div class="Label text-stone-900 text-opacity-50 text-base font-normal font-['Cabin']">Card Number</div>
+                  </div>
+                  <input class="InputField w-96 self-stretch px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" type="text" placeholder="5126-5987-2214-7621">
+
+                </div>
+              </div>
+              <div class="DateCvc w-96 justify-start items-center gap-8 inline-flex">
+                <div class="InputField flex-col justify-start items-start gap-2.5 inline-flex">
+                  <div class="Input h-20 flex-col justify-center items-start gap-2 flex">
+                    <div class="Label px-2 justify-start items-center gap-2.5 inline-flex">
+                      <div class="Label text-stone-900 text-opacity-50 text-base font-normal font-['Cabin']">Expiry Date</div>
+                    </div>
+                    <input class="InputField self-stretch px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" type="text" placeholder="MM / YYYY">
+                  </div>
+                </div>
+                <div class="InputField flex-col justify-start items-start gap-2.5 inline-flex">
+                  <div class="Input h-20 flex-col justify-center items-start gap-2 flex">
+                    <div class="Label px-2 justify-start items-center gap-2.5 inline-flex">
+                      <div class="Label text-stone-900 text-opacity-50 text-base font-normal font-['Cabin']">CVC </div>
+                    </div>
+                    <input class="InputField w-20 px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" type="text" placeholder="123">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="TotalSummary h-85 p-4 p-4 ml-4 mt-10 border border-black bg-white rounded-xl flex-col justify-start items-start gap-4 inline-flex">
+          <div class="Line01 justify-start items-center gap-2 inline-flex">
+            <div class="OrderSummary text-black text-xl font-medium font-['Cabin']">Order Summary</div>
+          </div>
+          <div class="Line02 self-stretch justify-between items-center inline-flex">
+            <div class="Items text-zinc-600 text-base font-normal font-['Cabin']">Items:</div>
+            <div class="584937 text-zinc-600 text-base font-normal font-['Cabin']">$ 5849.37 </div>
+          </div>
+          <div class="Line03 self-stretch justify-between items-center inline-flex">
+            <div class="Shipping text-zinc-600 text-base font-normal font-['Cabin']">Shipping:</div>
+            <div class="699 text-zinc-600 text-base font-normal font-['Cabin']">$ 6.99</div>
+          </div>
+          <div class="Line04 self-stretch justify-between items-center inline-flex">
+            <div class="EstimatedGst text-zinc-600 text-base font-normal font-['Cabin']">Estimated GST:</div>
+            <div class="76041 text-zinc-600 text-base font-normal font-['Cabin']">$ 760.41 </div>
+          </div>
+          <div class="Line05 self-stretch justify-between items-center inline-flex">
+            <div class="GiftCard text-zinc-600 text-base font-normal font-['Cabin']">Gift Card:</div>
+            <div class="000 text-zinc-600 text-base font-normal font-['Cabin']">$ 0.00</div>
+          </div>
+          <div class="Divider self-stretch h-px border border-slate-300"></div>
+          <div class="Total self-stretch justify-between items-center inline-flex">
+            <div class="OrderTotal text-red-600 text-xl font-medium font-['Cabin']">Order Total:</div>
+            <div class="660978 text-red-600 text-xl font-medium font-['Cabin']">$ 6609.78 </div>
+          </div>
+          <div class="Divider self-stretch h-px border border-slate-300"></div>
+          <div class="Button self-stretch px-6 py-2 bg-stone-900 rounded-xl justify-center items-center gap-2 inline-flex">
+            <div class="Button text-white text-base font-normal font-['Cabin']">Place your order</div>
+          </div>
+          <a href="./shoppingcar.html">
+            <div class="Button px-6 py-2 rounded-xl border border-stone-900 justify-center items-center gap-2 inline-flex">
+              <div class="Icon w-6 h-6 relative"></div>
+              <div class="Button text-stone-900 text-base font-normal font-['Cabin']">Back</div>
+            </div>
+          </a>
+          
+        </div>
+        <script src="..\static\js\index.js"></script>
+      </div>
+    </body>
+</html>
