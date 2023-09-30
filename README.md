@@ -31,3 +31,9 @@ node app.js
 在瀏覽器中打開以下 URL 以查看你的專案：
 http://localhost:8000/
 
+## 資料夾說明
+
+- views - 畫面放置處
+  - layouts main.handlebars檔案放置處
+  - static - 靜態資源放置處
+...
