@@ -20,6 +20,9 @@
   "homepage": "https://github.com/ooschool/web-02-h1008h1008#readme",
   "dependencies": {
     "express": "^4.18.2",
-    "express-handlebars": "^7.1.2"
+    "express-handlebars": "^7.1.2",
+    "mysql2": "^3.6.2",
+    "sequelize": "^6.33.0",
+    "sqlite3": "^5.1.6"
   }
 }

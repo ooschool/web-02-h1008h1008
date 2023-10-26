@@ -1,8 +1,11 @@
-const { Console } = require("console");
 const express = require("express");
 const exphbs = require("express-handlebars");
+const bodyParser = require('body-parser');
+const { Op } = require('sequelize')
 const path = require('path');
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const port = 8000;
 app.use(express.static("public"));
 app.use(express.json());
@@ -16,115 +19,78 @@ app.engine('handlebars', exphbs.engine({
   }
 }));
 app.set("view engine", "handlebars");
+require('./models');   // 导入模型定义
+const { Member, ProductMain } = require('./models');
+let productDatalist;
+ProductMain.findAll().then(products => {
+  // 在这里处理查询结果
+  productDatalist = products.map((product, index) => {
+    return {
+      productLink: `/product/${index}`,
+      imageUrl: product.image_url,
+      imageUrlsquare: "https://via.placeholder.com/64x64",
+      productName: product.name,
+      productDescription: product.description,
+      productDescriptionshort: product.specification,
+      productDescriptionlong: product.specification,
+      productstar: "4.0/5", // 这里的星级可以根据产品属性来设置
+      productPrice: `$ ${product.price.toFixed(2)}`, // 保留两位小数的价格
+      shoppingtag: "0", // 根据库存设置购物标签
+      productindex: `${index}`,
+      quantity: 1,
+    };
+  });
+  
+  // 输出替换后的 productDatalist
+}).catch(error => {
+  // 处理查询错误
+  console.error('Error fetching products:', error);
+});
 const publicPath = path.join(__dirname, './views');
 app.use('/', express.static(publicPath));
 // Define your routes
-let productDatalist = [
-  {
-    productLink: "/product/0",
-    imageUrl: "https://via.placeholder.com/159x200",
-    imageUrlsquare: "https://via.placeholder.com/64x64",
-    productName: "Product 1",
-    productDescription: "Description 1",
-    productDescriptionshort: "Description 1",
-    productDescriptionlong: "Description 1",
-    productstar: "4.0/5",
-    productPrice: "$ 99.99",
-    shoppingtag: "0",
-    productindex: "0",
-    quantity: 1,
-  },
-  {
-    productLink: "/product/1",
-    imageUrl: "https://via.placeholder.com/159x200",
-    imageUrlsquare: "https://via.placeholder.com/64x64",
-    productName: "Product 1",
-    productDescription: "Description 1",
-    productDescriptionshort: "Description 1",
-    productDescriptionlong: "Description 1",
-    productstar: "4.0/5",
-    productPrice: "$ 99.99",
-    shoppingtag: "1",
-    productindex: "1",
-    quantity: 1,
-  },
-  {
-    productLink: "/product/2",
-    imageUrl: "https://via.placeholder.com/159x200",
-    imageUrlsquare: "https://via.placeholder.com/64x64",
-    productName: "Product 1",
-    productDescription: "Description 1",
-    productDescriptionshort: "Description 1",
-    productDescriptionlong: "Description 1",
-    productstar: "4.0/5",
-    productPrice: "$ 99.99",
-    shoppingtag: "1",
-    productindex: "2",
-    quantity: 1,
-  },
-  {
-    productLink: "/product/3",
-    imageUrl: "https://via.placeholder.com/159x200",
-    imageUrlsquare: "https://via.placeholder.com/64x64",
-    productName: "Product 1",
-    productDescription: "Description 1",
-    productDescriptionshort: "Description 1",
-    productDescriptionlong: "Description 1",
-    productstar: "4.0/5",
-    productPrice: "$ 99.99",
-    shoppingtag: "1",
-    productindex: "3",
-    quantity: 1,
-  },
-  {
-    productLink: "/product/4",
-    imageUrl: "https://via.placeholder.com/159x200",
-    imageUrlsquare: "https://via.placeholder.com/64x64",
-    productName: "Product 1",
-    productDescription: "Description 1",
-    productDescriptionshort: "Description 1",
-    productDescriptionlong: "Description 1",
-    productstar: "4.0/5",
-    productPrice: "$ 99.99",
-    shoppingtag: "1",
-    productindex: "4",
-    quantity: 1,
-  },
-  {
-    productLink: "/product/4",
-    imageUrl: "https://via.placeholder.com/159x200",
-    imageUrlsquare: "https://via.placeholder.com/64x64",
-    productName: "Product 1",
-    productDescription: "Description 1",
-    productDescriptionshort: "Description 1",
-    productDescriptionlong: "Description 1",
-    productstar: "4.0/5",
-    productPrice: "$ 99.99",
-    shoppingtag: "1",
-    productindex: "5",
-    quantity: 1,
-  },
-  {
-    productLink: "/product/4",
-    imageUrl: "https://via.placeholder.com/159x200",
-    imageUrlsquare: "https://via.placeholder.com/64x64",
-    productName: "Product 1",
-    productDescription: "Description 1",
-    productDescriptionshort: "Description 1",
-    productDescriptionlong: "Description 1",
-    productstar: "4.0/5",
-    productPrice: "$ 99.99",
-    shoppingtag: "1",
-    productindex: "6",
-    quantity: 1,
-  },
-  // Add more product data objects as needed
-];
-let flag = 0;
-app.get("/", (req, res) => {
+let flag = 0 , page , limit;
+app.get("/", async function(req, res)  {
+  let productDatalisttemp;
+  page = req.query.page;
+  if (!page) {
+    page = 1; // 如果没有提供 page 参数，则默认为 1
+  }
+  let limits = req.query.limit;
+  limit = parseInt(limits);
+  if (!limit) {
+    limit = 6; // 如果没有提供 page 参数，则默认为 1
+  }
+  const offset = (page - 1) * limit; // 根据页码计算偏移量
+  try {
+    const products = await ProductMain.findAll({
+      offset,
+      limit,
+    });
+    productDatalisttemp = products.map((product, index) => {
+      return {
+        productLink: `/product/${index}`,
+        imageUrl: product.image_url,
+        imageUrlsquare: "https://via.placeholder.com/64x64",
+        productName: product.name,
+        productDescription: product.description,
+        productDescriptionshort: product.specification,
+        productDescriptionlong: product.specification,
+        productstar: "4.0/5", // 这里的星级可以根据产品属性来设置
+        productPrice: `$ ${product.price.toFixed(2)}`, // 保留两位小数的价格
+        shoppingtag: "0", // 根据库存设置购物标签
+        productindex: `${index}`,
+        quantity: 1,
+      };
+    });
+
+  } catch (error) {
+    console.error('Error', error);
+  }
   flag = 0;
-  res.render("index", { productDatalist });
+  res.render("index", { productDatalisttemp });
 });
+
 app.get("/product/:productId", (req, res) => {
   const productId = req.params.productId;
 
@@ -152,6 +118,47 @@ app.get("/api/products", (req, res) => {
   res.json(responseData);
 });
 
+app.get('/search', async function(req, res)  {
+  const keyword = req.query.keyword;
+  const query = {}
+  if (keyword) {
+      query.name = {[Op.substring]: keyword}
+  }
+  const queries = {
+    offset: (page - 1) * limit,
+    limit
+  }       
+
+  const data = await ProductMain.findAndCountAll({
+    where: query,
+    ...queries
+  })
+  
+  const products = data.rows; // 提取查询结果数组
+
+  productDatalisttemp = products.map((product) => {
+    return {
+      productLink: `/product/${product.id}`,
+      imageUrl: product.image_url,
+      imageUrlsquare: "https://via.placeholder.com/64x64",
+      productName: product.name,
+      productDescription: product.description,
+      productDescriptionshort: product.specification,
+      productDescriptionlong: product.specification,
+      productstar: "4.0/5", // 这里的星级可以根据产品属性来设置
+      productPrice: `$ ${product.price.toFixed(2)}`, // 保留两位小数的价格
+      shoppingtag: "0", // 根据库存设置购物标签
+      productindex: `${product.id}`,
+      quantity: 1,
+    };
+  });
+
+  const responseData = {
+    products: productDatalisttemp,
+    flag: flag
+  };
+  res.json(responseData);
+});
 app.post("/api/update-products", (req, res) => {
   const updatedProductDataList = req.body;
   // Update your data source here, e.g., save to a database, etc.

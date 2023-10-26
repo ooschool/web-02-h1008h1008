@@ -1,18 +1,18 @@
 
-  <div class="ContentFrame w-200 h-screen p-6 flex-col justify-start items-center gap-2.5 inline-flex">
+  <div class="ContentFrame w-full h-screen p-6 flex-col justify-start items-center gap-2.5 inline-flex">
     <div class="TopBar w-4/5 p-2 flex-col justify-start items-start gap-2.5 flex">
       <div class="Input w-full h-20 flex-col justify-center items-start gap-2 flex">
         <div class="Label px-2 justify-start items-center gap-2.5 inline-flex">
           <div class="Label text-zinc-600 text-base font-normal">Search Item</div>
         </div>
-        <input class="InputField w-full h-20 self-stretch px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" type="text" placeholder="Apple Watch, Samsung S21, Macbook Pro, ...">
+        <input class="InputField w-full h-20 self-stretch px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" id = "searchInput" type="text" placeholder="Apple Watch, Samsung S21, Macbook Pro, ...">
       </div>
     </div>
     <div class="ContentArea self-stretch h-screen py-2 flex-col justify-start items-start">
       <!-- Handlebars template -->
       <!-- Handlebars template -->
-      <ul class="Row01 self-stretch justify-center items-center gap-4 inline-flex flex-wrap">
-        {{#each productDatalist}}
+      <ul class="Row01 self-stretch justify-start items-center gap-4 inline-flex flex-wrap">
+        {{#each productDatalisttemp}}
           <li class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
             <a href="{{ productLink }}">
               <div class="ProductImage w-48 p-4 bg-white rounded-3xl justify-center items-center inline-flex">
