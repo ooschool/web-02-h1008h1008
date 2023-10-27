@@ -173,6 +173,15 @@ app.post("/api/update-products", (req, res) => {
 //   res.render("checkout", { pageTitle: "Checkout Page" });
 // });
 
+app.get("/login", (req, res) => {
+  
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  
+  res.render("register");
+});
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
