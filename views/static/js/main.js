@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("There was an error updating the product data on the server:", error);
         }
     }
-    
     document.querySelector('.MenuIcon').addEventListener('click', function () {
         if (isExpanded) {
         document.querySelector('.Navbar').style.width = '4rem'; // 将宽度设置为初始宽度

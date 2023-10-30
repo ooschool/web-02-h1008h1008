@@ -24,8 +24,8 @@ Member.create({
 // 向 Member 表插入种子数据
 Member.create({
   id: '2',
-  email: 'jane@example.com',
-  name: 'Jane Smith',
+  email: 'jae@example.com',
+  name: 'Ja Smith',
   address: '456 Elm St',
   phone_number: '987-654-3210',
   account: 'jane_smith',
@@ -34,19 +34,19 @@ Member.create({
 });
 
 // 向 ProductMain 表插入种子数据
-for (let i = 1; i <= 20; i++) {
-  ProductMain.create({
-    id: `${i}`,
-    price: 29.99 + i, // 每个产品的价格递增
-    supplier: `Supplier ${i}`,
-    stock: 100 - i, // 每个产品的库存递减
-    name: `Product ${i}`,
-    description: `Description for Product ${i}`,
-    descriptionshort: `shortDescription for Product ${i}`,
-    specification: `Specification for Product ${i}`,
-    image_url: `https://via.placeholder.com/159x200?text=Product${i}`,
-  });
-}
+// for (let i = 1; i <= 20; i++) {
+//   ProductMain.create({
+//     id: `${i}`,
+//     price: 29.99 + i, // 每个产品的价格递增
+//     supplier: `Supplier ${i}`,
+//     stock: 100 - i, // 每个产品的库存递减
+//     name: `Product ${i}`,
+//     description: `Description for Product ${i}`,
+//     descriptionshort: `shortDescription for Product ${i}`,
+//     specification: `Specification for Product ${i}`,
+//     image_url: `https://via.placeholder.com/159x200?text=Product${i}`,
+//   });
+// }
 
 // 添加更多的会员和产品种子数据
 

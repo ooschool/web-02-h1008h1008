@@ -3,6 +3,10 @@ const exphbs = require("express-handlebars");
 const bodyParser = require('body-parser');
 const { Op } = require('sequelize')
 const path = require('path');
+const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const { createTokens, validateToken } = require("./JWT");
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -174,13 +178,90 @@ app.post("/api/update-products", (req, res) => {
 // });
 
 app.get("/login", (req, res) => {
-  
   res.render("login");
 });
+app.post("/login", async (req, res) => {
+  const { emailaddress, password } = req.body;
 
-app.get("/register", (req, res) => {
+  const user = await Member.findOne({ where: { email: emailaddress } });
+
+  if (!user) {
+    res.json({ message: "User Doesn't Exist" });
+  }
+  else{
+    const dbPassword = user.passhash;
+    bcrypt.compare(password, dbPassword).then((match) => {
+      if (!match) {
+        res.json({ message: "Wrong Emailaddress and Password Combination!" });
+      } else {
+        const accessToken = createTokens(user);
+
+        res.cookie("access-token", accessToken, {
+          maxAge: 60 * 60 * 24 * 30 * 1000,
+          httpOnly: true,
+        });
+
+        res.json({message:"LOGGED IN"});
+      }
+    });
+  }
   
+});
+app.get("/register", (req, res) => {
   res.render("register");
+});
+
+app.post("/register", (req, res) => {
+  const { emailaddress, password } = req.body;
+  let lastMemberId
+  Member.findOne({
+    order: [['id', 'DESC']],
+    attributes: ['id']
+  }).then(lastMember => {
+    if (lastMember) {
+      lastMemberId = parseInt(lastMember.id) + 1;
+    } else {
+      console.log('No records in the member table');
+    }
+  });
+  bcrypt.hash(password, 10).then((hash) => {
+    Member.create({
+      id: lastMemberId.toString(),
+      email: emailaddress,
+      name: null,
+      address: null,
+      phone_number: null,
+      account: null,
+      passhash: hash,
+      options: null,
+    })
+    .then(() => {
+      res.json("USER REGISTERED");
+    })
+    .catch((err) => {
+      if (err) {
+        res.status(400).json({ error: err });
+      }
+    });
+  });
+});
+
+app.get("/forget", (req, res) => {
+  res.render("forget");
+});
+
+app.post("/forget", async (req, res) => {
+  const { emailaddress } = req.body;
+
+  const user = await Member.findOne({ where: { email: emailaddress } });
+
+  if (!user) {
+    res.json({ message: "User Doesn't Exist" });
+  }
+  else{
+    
+  }
+  
 });
 // Start the server
 app.listen(port, () => {
