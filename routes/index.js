@@ -1,6 +1,4 @@
 const express = require("express");
-const exphbs = require("express-handlebars");
-const bodyParser = require('body-parser');
 const { Op } = require('sequelize')
 const path = require('path');
 const bcrypt = require("bcrypt");
@@ -11,8 +9,6 @@ const crypto = require('crypto');
 var authRouter = require('./routes/auth');
 var session = require('express-session');
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 const port = 3000;
 app.use(express.static("public"));
 app.use(express.json());
@@ -22,17 +18,6 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }))
-// Set up Handlebars as the view engine
-app.engine('handlebars', exphbs.engine({
-  defaultLayout: "main" ,
-  helpers: {
-    eq: function(a, b, options) {
-      return a === b ? options.fn(this) : options.inverse(this);
-    }
-  },
-  partialsDir: __dirname + '/views/partials'  
-}));
-app.set("view engine", "handlebars");
 require('./models');   // 导入模型定义
 const { Member, ProductMain } = require('./models');
 let productDatalist;
@@ -103,7 +88,7 @@ app.get("/", async function(req, res)  {
     console.error('Error', error);
   }
   flag = 0;
-  res.render("index", { productDatalisttemp , flag : '0'});
+  res.render("index", { productDatalisttemp });
 });
 
 app.get("/product/:productId", (req, res) => {
@@ -114,16 +99,15 @@ app.get("/product/:productId", (req, res) => {
   );
 
   if (productDetail) {
-      res.render("product", { productDetail , flag : '0'});
+      res.render("product", { productDetail });
   } else {
       res.render("not_found"); // 針對無效的產品ID，可以渲染一個「未找到」的頁面
   }
 });
 
 app.get("/shoppingcar", (req, res) => {
-  console.log(productDatalist)
-  cartProductList = productDatalist.filter(product => product.shoppingtag === '1')
-  res.render("shoppingcar", { productDatalist , flag : '1'});
+  flag = 1;
+  res.render("shoppingcar", { productDatalist });
 });
 
 app.get("/api/products", (req, res) => {
@@ -270,8 +254,8 @@ app.post("/forget", async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'iCloud',  // 換成你使用的郵件服務
       auth: {
-        user: '',
-        pass: ''
+        user: 'howard1008@icloud.com',
+        pass: 'Goodgood1008'
       }
     });
     
@@ -293,7 +277,4 @@ app.post("/forget", async (req, res) => {
   }
   
 });
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+

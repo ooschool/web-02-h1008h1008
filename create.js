@@ -11,8 +11,9 @@ const sequelize = new Sequelize('web02', 'root', 'Goodgood1008', {
 
 const Member = sequelize.define('member', {
   id: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER, // 修改类型为整数
     primaryKey: true,
+    autoIncrement: true, // 添加此行以使 ID 自动增加
   },
   email: Sequelize.STRING,
   name: Sequelize.STRING,
@@ -21,6 +22,14 @@ const Member = sequelize.define('member', {
   account: Sequelize.STRING,
   passhash: Sequelize.STRING,
   options: Sequelize.JSON,
+  resetPasswordToken: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  resetPasswordExpires: {
+    type: Sequelize.DATE,
+    allowNull: true,
+  },
 }, {
   tableName: 'member', // 添加此行来指定正确的表名
 });
@@ -30,7 +39,10 @@ const Cart = sequelize.define('cart', {
     type: Sequelize.STRING,
     primaryKey: true,
   },
-  member_id: Sequelize.STRING,
+  member_id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   datetime: Sequelize.DATE,
 });
 
@@ -39,7 +51,10 @@ const OrderLog = sequelize.define('order_log', {
     type: Sequelize.STRING,
     primaryKey: true,
   },
-  member_id: Sequelize.STRING,
+  member_id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   datetime: Sequelize.DATE,
   pay_status: Sequelize.BOOLEAN,
   ship_status: Sequelize.STRING,
