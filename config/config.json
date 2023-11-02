@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "Goodgood1008",
-    "database": "web02",
+    "database": "web",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

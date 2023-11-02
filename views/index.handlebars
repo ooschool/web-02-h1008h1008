@@ -5,12 +5,13 @@
         <div class="Label px-2 justify-start items-center gap-2.5 inline-flex">
           <div class="Label text-zinc-600 text-base font-normal">Search Item</div>
         </div>
-        <input class="InputField w-full h-20 self-stretch px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" id = "searchInput" type="text" placeholder="Apple Watch, Samsung S21, Macbook Pro, ...">
+        <form action = "/" class = "InputFields w-full h-20" onsubmit="return false;">
+          <input class="InputField w-full h-20 self-stretch px-4 py-2 bg-white rounded-xl shadow justify-start items-center gap-2 inline-flex" id = "searchInput" type="text" placeholder="Apple Watch, Samsung S21, Macbook Pro, ...">
+          <button type='submit' id='myButton' class='btn hidden'></button>
+        </form>  
       </div>
     </div>
     <div class="ContentArea self-stretch h-screen py-2 flex-col justify-start items-start">
-      <!-- Handlebars template -->
-      <!-- Handlebars template -->
       <ul class="Row01 self-stretch justify-start items-center gap-4 inline-flex flex-wrap">
         {{#each productDatalisttemp}}
           <li class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">

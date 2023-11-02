@@ -1,19 +1,16 @@
 const Sequelize = require('sequelize');
 
-// 创建 Sequelize 实例并连接到数据库
-const sequelize = new Sequelize('web02', 'root', 'Goodgood1008', {
+const sequelize = new Sequelize('web', 'root', 'Goodgood1008', {
   host: '127.0.0.1',
   port: 3306,
   dialect: 'mysql'
 });
 
-// 定义 member 模型
-
 const Member = sequelize.define('member', {
   id: {
-    type: Sequelize.INTEGER, // 修改类型为整数
+    type: Sequelize.INTEGER,
     primaryKey: true,
-    autoIncrement: true, // 添加此行以使 ID 自动增加
+    autoIncrement: true, 
   },
   email: Sequelize.STRING,
   name: Sequelize.STRING,
@@ -22,16 +19,8 @@ const Member = sequelize.define('member', {
   account: Sequelize.STRING,
   passhash: Sequelize.STRING,
   options: Sequelize.JSON,
-  resetPasswordToken: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  resetPasswordExpires: {
-    type: Sequelize.DATE,
-    allowNull: true,
-  },
 }, {
-  tableName: 'member', // 添加此行来指定正确的表名
+  tableName: 'member', 
 });
 
 const Cart = sequelize.define('cart', {
@@ -68,7 +57,7 @@ const OrderProduct = sequelize.define('order_product', {
   total_price: Sequelize.INTEGER,
 });
 
-const ProductMain = sequelize.define('product_main', {
+const ProductMain = sequelize.define('productmain', {
   id: {
     type: Sequelize.STRING,
     primaryKey: true,
