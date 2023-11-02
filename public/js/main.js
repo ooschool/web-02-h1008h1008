@@ -19,17 +19,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
     
             const data = await response.json();
-            console.log('Full Response:', data);  // Log the full response from the server
-            console.log(data.message);  // Log the confirmation message from the server
+            console.log('Full Response:', data);  
+            console.log(data.message); 
         } catch (error) {
             console.error("There was an error updating the product data on the server:", error);
         }
     }
     document.querySelector('.MenuIcon').addEventListener('click', function () {
         if (isExpanded) {
-        document.querySelector('.Navbar').style.width = '4rem'; // 将宽度设置为初始宽度
+        document.querySelector('.Navbar').style.width = '4rem'; 
         } else {
-        document.querySelector('.Navbar').style.width = '16rem'; // 将宽度扩展
+        document.querySelector('.Navbar').style.width = '16rem'; 
         }
         isExpanded = !isExpanded;
     });

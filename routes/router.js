@@ -18,6 +18,8 @@ appRouter.get('/register', AuthController.renderSignUpPageHandler)
 appRouter.post('/register', AuthController.RegisterPageHandler)
 appRouter.get('/forget', AuthController.renderforgetPageHandler)
 appRouter.post('/forget', AuthController.forgetHandler)
+appRouter.get('/reset', AuthController.renderResetPageHandler)
+appRouter.post('/reset', AuthController.RegisterPageHandler)
 
 // app.get("/checkout", (req, res) => {
 //   res.render("checkout", { pageTitle: "Checkout Page" });

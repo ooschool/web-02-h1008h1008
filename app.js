@@ -7,14 +7,7 @@ const appRouter = require('./routes/router')
 const authRouter = require('./routes/auth');
 const app = express();
 const port = 3000;
-const session = require('express-session');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(appRouter)
-app.use('/auth', authRouter);
-app.use('/', express.static(publicPath));
-app.use(express.static("public"));
-app.use(express.json());
+var session = require('express-session');
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -31,6 +24,14 @@ app.engine('handlebars', exphbs.engine({
   partialsDir: __dirname + '/views/partials'  
 }));
 app.set("view engine", "handlebars");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(express.json());
+app.use(appRouter)
+app.use('/auth', authRouter);
+app.use('/', express.static(publicPath));
+
 
 
 

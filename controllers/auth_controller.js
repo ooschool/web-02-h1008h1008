@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const { createTokens, validateToken } = require("../public/JWT");
 const nodemailer = require('nodemailer');
 const { Member} = require('../public/models');
+var expirationTime , token;
 const AuthController = {
     renderSignUpPageHandler: (req, res) => {
         res.render("register");
@@ -13,6 +14,20 @@ const AuthController = {
     },
     renderforgetPageHandler: (req, res) => {
         res.render('forget')
+    },
+    renderResetPageHandler: (req, res) => {
+        console.log(req.query.token)
+        if (req.query.token == token && req.query.token) {
+            const now = Date.now();
+            if (now > expirationTime) {
+            return res.render('error', { message: '令牌已过期' });
+            }
+            res.render('reset');
+        }
+        else{
+            return res.render('error', { message: '无效的令牌' });
+        }
+        
     },
     LoginHandler: async (req, res) => {
         const { emailaddress, password } = req.body;
@@ -70,34 +85,44 @@ const AuthController = {
             res.json({ message: "User Doesn't Exist" });
         }
         else{
-            const token = crypto.randomBytes(20).toString('hex');
-
-            user.resetPasswordToken = token;
-            user.resetPasswordExpires = Date.now() + 3600000;  
-
-            await user.save();
+            token = crypto.randomBytes(20).toString('hex');
+            expirationTime = Date.now() + 3600000; 
+            const {
+            refresh_token,
+            access_token,
+            } = req.session.tokens;
+            
+        
             const transporter = nodemailer.createTransport({
-            service: 'iCloud', 
+            service: 'gmail',
             auth: {
-                user: '',
-                pass: ''
-            }
+                type: 'OAuth2',
+                user: 'howard900100@gmail.com',
+                clientId: process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                refreshToken: refresh_token,
+                accessToken: access_token,
+            },
             });
+        
             
             const mailOptions = {
-            from: 'howard1008@icloud.com',
+            from: 'howard900100@gmail.com',
             to: user.email,
             subject: '重設您的密碼',
             text: '點擊以下連結以重設您的密碼：\n\n' +
-                    'http://yourwebsite.com/reset-password?token=' + user.resetPasswordToken +
+                    'http://localhost:3000/reset?token=' + token +
                     '\n\n如果您沒有提出重設密碼的請求，請忽略此郵件。'
             };
         
-            transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                return res.status(500).json({ message: 'Error sending email: ' + error.message });
+            transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send('Error sending email');
+            } else {
+                console.log(info);
+                res.send('Email sent');
             }
-            res.json({ message: 'Email sent: ' + info.response });
             });
         }
     },

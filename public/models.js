@@ -86,7 +86,6 @@ const CartProduct = sequelize.define('cart_product', {
   purchase_count: Sequelize.INTEGER,
 });
 
-// 定义外键关系
 Member.hasMany(Cart, { foreignKey: 'member_id' });
 Cart.belongsTo(Member, { foreignKey: 'member_id' });
 

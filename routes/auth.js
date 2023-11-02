@@ -23,7 +23,7 @@ router.get('/google/callback', async (req, res) => {
     googleOAuth2Client.setCredentials(tokens);
     req.session.tokens = tokens;
 
-    res.redirect('/email/user');
+    res.redirect('/');
   } catch (err) {
     console.error('Error authenticating with Google:', err);
     res.status(500).send('Error authenticating with Google');
