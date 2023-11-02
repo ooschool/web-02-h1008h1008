@@ -57,22 +57,16 @@ npm install sequelize mysql2
 ```sql
 CREATE DATABASE web02;
 ```
-
-### 步驟 3: 測試資料庫連接
-使用以下命令測試資料庫連線是否正常運作：
-```bash
-sequelize db:seed:all
-```
-如果一切設定正確，你應該能夠成功連接到資料庫
-
-### 步骤 4: 運行create.js 來創建table
+### 步骤 3:創建table
 使用以下命令來創建table：
 ```bash
 node ./create.js
 ```
 
-### 步骤 5: 運行seed.js 來創建種子資料
+### 步驟 4: 創建種子資料
 使用以下命令來創建種子資料：
 ```bash
-node ./seed.js
+npx sequelize db:seed:all
 ```
+
+
