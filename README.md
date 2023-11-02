@@ -68,5 +68,10 @@ node ./create.js
 ```bash
 npx sequelize db:seed:all
 ```
-
+## 本機寄信教學
+(<https://israynotarray.com/nodejs/20230722/1626712457/>)
+### 步驟 1:按照教學拿到CLIENT_ID , CLIENT_SECRET 
+### 步驟 2: 填入環境變數
+參考.env.example填入變數
+### 步驟 3: 運行後到http://localhost:3000/auth/login設定
 
