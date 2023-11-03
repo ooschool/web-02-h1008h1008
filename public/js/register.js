@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 alert('Register success');
-                window.location.href = '/login';  // 在这里添加跳转逻辑
+                window.location.href = '/login';  
             })
             .catch((error) => {
                 console.log(error);

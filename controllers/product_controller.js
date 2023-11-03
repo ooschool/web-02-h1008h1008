@@ -25,7 +25,7 @@ ProductMain.findAll().then(products => {
 const { Op } = require('sequelize')
 const ProductController = {
     renderIndexPageHandler: async (req, res) =>  {
-        let productDatalisttemp;
+        let productDatalisttemp , products;
         page = req.query.page;
         if (!page) {
             page = 1;
@@ -36,11 +36,30 @@ const ProductController = {
             limit = 6;
         }
         const offset = (page - 1) * limit;
-        try {
-            const products = await ProductMain.findAll({
-            offset,
-            limit,
+        const keyword = req.query.search?.trim();
+        if (keyword) {
+            const query = {}
+            query.name = {[Op.substring]: keyword}
+            const queries = {
+                offset: (page - 1) * limit,
+                limit
+            }       
+    
+            const data = await ProductMain.findAndCountAll({
+                where: query,
+                ...queries
+            })
+            products = data.rows; 
+        }
+        else{
+            products = await ProductMain.findAll({
+                offset,
+                limit,
             });
+        }
+        
+        try {
+            
             productDatalisttemp = products.map((product, index) => {
             return {
                 productLink: `/product/${index}`,
@@ -61,52 +80,6 @@ const ProductController = {
         } catch (error) {
             console.error('Error', error);
         }
-        res.render("index", { productDatalisttemp , flag : '0'});
-    },
-    searchPageHandler: async (req, res) =>  {
-        page = req.query.page;
-        const keyword = req.body.searchTerm;
-        if (!page) {
-            page = 1;
-        }
-        let limits = req.query.limit;
-        limit = parseInt(limits);
-        if (!limit) {
-            limit = 6;
-        }
-        const query = {}
-        if (keyword) {
-            query.name = {[Op.substring]: keyword}
-        }
-        const queries = {
-            offset: (page - 1) * limit,
-            limit
-        }       
-
-        const data = await ProductMain.findAndCountAll({
-            where: query,
-            ...queries
-        })
-        
-        const products = data.rows; 
-        productDatalisttemp = products.map((product, index) => {
-            return {
-                productLink: `/product/${index}`,
-                imageUrl: product.image_url,
-                imageUrlsquare: "https://via.placeholder.com/64x64",
-                productName: product.name,
-                productDescription: product.description,
-                productDescriptionshort: product.specification,
-                productDescriptionlong: product.specification,
-                productstar: "4.0/5", 
-                productPrice: `$ ${product.price.toFixed(2)}`, 
-                shoppingtag: "0", 
-                productindex: `${index}`,
-                quantity: 1,
-            };
-            
-
-        }); 
         res.render("index", { productDatalisttemp , flag : '0'});
     },
     renderShooppingPageHandler: (req, res) => {

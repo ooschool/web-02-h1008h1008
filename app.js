@@ -2,6 +2,7 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require("cookie-parser");
 const publicPath = path.join(__dirname, './views');
 const appRouter = require('./routes/router')
 const authRouter = require('./routes/auth');
@@ -26,6 +27,7 @@ app.engine('handlebars', exphbs.engine({
 app.set("view engine", "handlebars");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.json());
 app.use(appRouter)

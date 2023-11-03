@@ -7,32 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(data => { 
-            const searchInput = document.getElementById('searchInput');
             productDatalist = data.products; 
-            searchInput.addEventListener('keydown', async (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                document.getElementById('myButton').click();
-
-                const searchTerm = searchInput.value;
-                console.log(searchTerm)
-                const data = { searchTerm };
-                console.log(data)
-                await fetch('/', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json', 
-                    },
-                    body: JSON.stringify(data),
-                  })
-                  .then(data => {
-                    window.location.href = '/'; 
-                  })
-                  .catch((error) => {
-                      console.log(error);
-                  });
-              }
-            });
             sources = `{{#each productDatalist}}
                 {{#eq shoppingtag "1"}}
                 <li class="BagItem p-2 bg-white rounded-xl justify-start items-center gap-4 flex">

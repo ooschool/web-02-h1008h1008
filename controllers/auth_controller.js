@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const crypto = require('crypto');
-const cookieParser = require("cookie-parser");
-const { createTokens, validateToken } = require("../public/JWT");
+const { createTokens, createresetTokens, validateresetToken } = require("../public/JWT");
 const nodemailer = require('nodemailer');
 const { Member} = require('../public/models');
 var expirationTime , token;
@@ -17,16 +16,13 @@ const AuthController = {
     },
     renderResetPageHandler: (req, res) => {
         console.log(req.query.token)
-        if (req.query.token == token && req.query.token) {
-            const now = Date.now();
-            if (now > expirationTime) {
-            return res.render('error', { message: '令牌已过期' });
-            }
+        if(validateresetToken(req.query.token)){
             res.render('reset');
         }
         else{
-            return res.render('error', { message: '无效的令牌' });
+            return res.status(400);
         }
+        
         
     },
     LoginHandler: async (req, res) => {
@@ -85,8 +81,8 @@ const AuthController = {
             res.json({ message: "User Doesn't Exist" });
         }
         else{
-            token = crypto.randomBytes(20).toString('hex');
-            expirationTime = Date.now() + 3600000; 
+            const accessToken = createresetTokens(user);
+
             const {
             refresh_token,
             access_token,
@@ -111,7 +107,7 @@ const AuthController = {
             to: user.email,
             subject: '重設您的密碼',
             text: '點擊以下連結以重設您的密碼：\n\n' +
-                    'http://localhost:3000/reset?token=' + token +
+                    'http://localhost:3000/reset?token=' + accessToken +
                     '\n\n如果您沒有提出重設密碼的請求，請忽略此郵件。'
             };
         
@@ -125,6 +121,9 @@ const AuthController = {
             }
             });
         }
+    },
+    renderprofilePageHandler: async (req, res) => {
+        res.render('index')
     },
 }
 
