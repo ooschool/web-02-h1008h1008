@@ -1,26 +1,6 @@
-const {  ProductMain } = require('../public/models');
-let productDatalist;
-ProductMain.findAll().then(products => {
-  productDatalist = products.map((product, index) => {
-    return {
-      productLink: `/product/${index}`,
-      imageUrl: product.image_url,
-      imageUrlsquare: "https://via.placeholder.com/64x64",
-      productName: product.name,
-      productDescription: product.description,
-      productDescriptionshort: product.specification,
-      productDescriptionlong: product.specification,
-      productstar: "4.0/5", 
-      productPrice: `$ ${product.price.toFixed(2)}`, 
-      shoppingtag: "0", 
-      productindex: `${index}`,
-      quantity: 1,
-    };
-  });
-  
-}).catch(error => {
-  console.error('Error fetching products:', error);
-});
+const {  ProductMain , CartProduct ,Cart} = require('../public/models');
+const { sign, verify } = require("jsonwebtoken");
+
 const ApiController = {
     returnProductHandler: async (req, res) => {
       var productDatalist;
@@ -41,19 +21,95 @@ const ApiController = {
             quantity: 1,
           };
         });
+        
       }).catch(error => {
         console.error('Error fetching products:', error);
       });
+      const token = req.cookies["access-token"];
+      if(token){
+        verify(token, 'jwtsecretplschange', async (err, decoded) => {
+          if (err) {
+            return res.status(401).json({ message: 'Unauthorized' });
+          }
+          var memberId = decoded.id;
+          if(memberId){
+            const Cart1 = await Cart.findOne({ where: { member_id: memberId } });
+            const existtable = await CartProduct.findOne({ where: { cart_id: Cart1.id } });
+            if(existtable){
+              const productCountMap = existtable["product_id_and_count"];
+              productDatalist.forEach((product) => {
+                const productId = product.productindex;
+                if (productCountMap.hasOwnProperty(productId)) {
+                  product.shoppingtag = '1';
+                  product.quantity = productCountMap[productId];
+                }
+              });
+              
+            }
+            else{
+              await CartProduct.create({
+                cart_id: Cart1.id,
+                product_id_and_count : null,
+              }); 
+            }
+            
+            const responseData = {
+              products: productDatalist,
+            };
+            res.json(responseData);
+            }
+        });
+      }
+      else{
         const responseData = {
-            products: productDatalist,
-          };
+          products: productDatalist,
+        };
         res.json(responseData);
+        
+      }
+      
     },
     updateProductHandler: (req, res) => {
+        console.log(1232123)
         const updatedProductDataList = req.body; 
-        productDatalist = updatedProductDataList; 
+        const filteredProducts = updatedProductDataList.filter((product) => product.shoppingtag === "1");
+
+        const resultObject = filteredProducts.reduce((accumulator, product) => {
+          accumulator[product.productindex] = product.quantity;
+          return accumulator;
+        }, {});
+        
+        console.log("Result JSON:", resultObject);
+        const token = req.cookies["access-token"];
+        if(token){
+          verify(token, 'jwtsecretplschange', async (err, decoded) => {
+            if (err) {
+              return res.status(401).json({ message: 'Unauthorized' });
+            }
+            var memberId = decoded.id;
+            if(memberId){
+              const Cart1 = await Cart.findOne({ where: { member_id: memberId } });
+              const existtable = await CartProduct.findOne({ where: { cart_id: Cart1.id } });
+              if(existtable){
+                existtable.product_id_and_count = resultObject;
+                await existtable.save();
+              }
+              else{
+                await CartProduct.create({
+                  cart_id: Cart1.id,
+                  product_id_and_count : resultObject,
+                }); 
+              }    
+            }
+          });
+        }
         res.json({ message: "Products updated successfully!" });
     },
+    addtocartHandler: (req, res) => {
+      const updatedProductDataList = req.body; 
+      productDatalist = updatedProductDataList; 
+      res.json({ message: "Products updated successfully!" });
+  },
 }
 
 module.exports = ApiController

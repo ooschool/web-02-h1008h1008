@@ -11,9 +11,11 @@ appRouter.get('/product/:productId', ProductController.renderProductPageHandler)
 
 appRouter.get('/api/products', ApiController.returnProductHandler)
 appRouter.post('/api/update-products', ApiController.updateProductHandler)
+appRouter.post('/api/addtocar', ApiController.addtocartHandler)
 
 appRouter.get('/login', AuthController.renderSignInPageHandler)
 appRouter.post('/login', AuthController.LoginHandler)
+appRouter.get('/logout', AuthController.renderlogoutPageHandler)
 appRouter.get('/register', AuthController.renderSignUpPageHandler)
 appRouter.post('/register', AuthController.RegisterPageHandler)
 appRouter.get('/forget', AuthController.renderforgetPageHandler)

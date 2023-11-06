@@ -32,7 +32,8 @@ const Cart = sequelize.define('cart', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  datetime: Sequelize.DATE,
+}, {
+  tableName: 'cart', 
 });
 
 const OrderLog = sequelize.define('order_log', {
@@ -82,8 +83,19 @@ const OrderDiscount = sequelize.define('order_discount', {
   discount_amount: Sequelize.INTEGER,
 });
 
-const CartProduct = sequelize.define('cart_product', {
-  purchase_count: Sequelize.INTEGER,
+const CartProduct = sequelize.define('cart_products', {
+  id: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+  },
+  cart_id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  product_id_and_count: {
+    allowNull: true,
+    type: Sequelize.JSON,
+  },
 });
 
 Member.hasMany(Cart, { foreignKey: 'member_id' });
@@ -107,8 +119,8 @@ OrderDiscount.belongsTo(DiscountCode, { foreignKey: 'code_id' });
 Cart.hasMany(CartProduct, { foreignKey: 'cart_id' });
 CartProduct.belongsTo(Cart, { foreignKey: 'cart_id' });
 
-ProductMain.hasMany(CartProduct, { foreignKey: 'product_id' });
-CartProduct.belongsTo(ProductMain, { foreignKey: 'product_id' });
+// ProductMain.hasMany(CartProduct, { foreignKey: 'product_id' });
+// CartProduct.belongsTo(ProductMain, { foreignKey: 'product_id' });
 
 module.exports = {
   Member,

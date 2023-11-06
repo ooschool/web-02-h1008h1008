@@ -1,4 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
+    async function updateProducts(productDataList) {
+        try {
+            const response = await fetch('/api/update-products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(productDataList)
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log('Full Response:', data);  
+            console.log(data.message); 
+        } catch (error) {
+            console.error("There was an error updating the product data on the server:", error);
+        }
+    }
     fetch('/api/products')
         .then(response => {
             if (!response.ok) {
@@ -36,11 +57,11 @@ document.addEventListener("DOMContentLoaded", function () {
             buttons.forEach(function (button) {
                 button.addEventListener("click", function () {
                     var num = button.getAttribute("value");
-                    console.log(productDatalist)
                     if (num >= 0 && num < productDatalist.length) {
                         productDatalist[num].shoppingtag = "1";
                         renderProducts();
-                        console.log(`Product ${num + 1} shoppingtag updated to 1`);
+                        console.log(productDatalist)
+                        updateProducts(productDatalist);
                     } else {
                         console.error("Invalid product index");
                     }

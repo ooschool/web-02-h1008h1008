@@ -46,20 +46,20 @@ document.addEventListener('DOMContentLoaded', function() {
             var carElement = document.getElementById("car");
             var checkElement = document.getElementById("check");
 
-            function handleClick() {
-            updateProducts(productDatalist);
-            }
-            if (homeElement) {
-            homeElement.addEventListener("click", handleClick);
-            }
+            // function handleClick() {
+            // updateProducts(productDatalist);
+            // }
+            // if (homeElement) {
+            // homeElement.addEventListener("click", handleClick);
+            // }
 
-            if (carElement) {
-            carElement.addEventListener("click", handleClick);
-            }
+            // if (carElement) {
+            // carElement.addEventListener("click", handleClick);
+            // }
 
-            if (checkElement) {
-            checkElement.addEventListener("click", handleClick);
-            }
+            // if (checkElement) {
+            // checkElement.addEventListener("click", handleClick);
+            // }
         })
         .catch(error => {
         console.error("There was an error fetching the product data:", error);

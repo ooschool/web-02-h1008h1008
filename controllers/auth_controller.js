@@ -1,29 +1,34 @@
 const bcrypt = require("bcrypt");
-const crypto = require('crypto');
 const { createTokens, createresetTokens, validateresetToken } = require("../public/JWT");
 const nodemailer = require('nodemailer');
-const { Member} = require('../public/models');
-var expirationTime , token;
+const { Member , Cart ,CartProduct } = require('../public/models');
 const AuthController = {
     renderSignUpPageHandler: (req, res) => {
         res.render("register");
     },
     renderSignInPageHandler: (req, res) => {
-        res.render('login')
+        const token = req.cookies["access-token"];
+        if(validateresetToken(token)){
+            res.render('index')
+        }
+        else{
+            res.render('login')
+        }
     },
     renderforgetPageHandler: (req, res) => {
         res.render('forget')
     },
+    renderlogoutPageHandler: (req, res) => {
+        res.clearCookie('access-token');
+        res.render('index');
+    },
     renderResetPageHandler: (req, res) => {
-        console.log(req.query.token)
         if(validateresetToken(req.query.token)){
             res.render('reset');
         }
         else{
             return res.status(400);
         }
-        
-        
     },
     LoginHandler: async (req, res) => {
         const { emailaddress, password } = req.body;
@@ -34,19 +39,26 @@ const AuthController = {
         }
         else{
             const dbPassword = user.passhash;
-            bcrypt.compare(password, dbPassword).then((match) => {
-            if (!match) {
-                res.json({ message: "Wrong Emailaddress and Password Combination!" });
-            } else {
-                const accessToken = createTokens(user);
+            bcrypt.compare(password, dbPassword).then(async (match) => {
+                if (!match) {
+                    res.json({ message: "Wrong Emailaddress and Password Combination!" });
+                } 
+                else {
+                    console.log(user.id)
+                    const existingCart = await Cart.findOne({ where: { member_id: user.id } });
+                    if (!existingCart) {
+                        await Cart.create({
+                            member_id: user.id,
+                        });
+                    }
+                    const accessToken = createTokens(user);
+                    res.cookie("access-token", accessToken, {
+                    maxAge: 60 * 60 * 24 * 30 * 1000,
+                    httpOnly: true,
+                    });
 
-                res.cookie("access-token", accessToken, {
-                maxAge: 60 * 60 * 24 * 30 * 1000,
-                httpOnly: true,
-                });
-
-                res.json({message:"LOGGED IN"});
-            }
+                    res.json({message:"LOGGED IN"});
+                }
             });
         }
     },
@@ -71,6 +83,8 @@ const AuthController = {
             }
             });
         });
+        
+        
     },
     forgetHandler: async (req, res) => {
         const { emailaddress } = req.body;

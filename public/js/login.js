@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('loginbtn').addEventListener('click', function(event) {
-        event.preventDefault(); // 阻止表单默认提交行为
+        event.preventDefault(); 
 
         const emailaddress = document.getElementById('emailaddress').value;
         const password = document.getElementById('pwd').value;
