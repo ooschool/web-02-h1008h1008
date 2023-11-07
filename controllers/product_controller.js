@@ -1,5 +1,6 @@
-const {  ProductMain } = require('../public/models');
-let productDatalist;
+const {  ProductMain , Cart , CartProduct} = require('../public/models');
+const { verify } = require("jsonwebtoken");
+var productDatalist;
 ProductMain.findAll().then(products => {
   productDatalist = products.map((product, index) => {
     return {
@@ -21,7 +22,39 @@ ProductMain.findAll().then(products => {
 }).catch(error => {
   console.error('Error fetching products:', error);
 });
-
+function checktoken(token) {
+    if(token){
+        console.log(555)
+        verify(token, 'jwtsecretplschange', async (err, decoded) => {
+            if (err) {
+            return res.status(401).json({ message: 'Unauthorized' });
+            }
+            var memberId = decoded.id;
+            if(memberId){
+                const Cart1 = await Cart.findOne({ where: { member_id: memberId } });
+                const existtable = await CartProduct.findOne({ where: { cart_id: Cart1.id } });
+                if(existtable){
+                    const productCountMap = existtable["product_id_and_count"];
+                    console.log(productCountMap)
+                    productDatalist.forEach((product) => {
+                        const productId = product.productindex;
+                        if (productCountMap.hasOwnProperty(productId)) {
+                            product.shoppingtag = '1';
+                            product.quantity = productCountMap[productId];
+                        }
+                    }); 
+                }
+                else{
+                    await CartProduct.create({
+                    cart_id: Cart1.id,
+                    product_id_and_count : null,
+                    }); 
+                }
+            }
+        });
+    }
+    return productDatalist;
+}
 const { Op } = require('sequelize')
 const ProductController = {
     renderIndexPageHandler: async (req, res) =>  {
@@ -83,8 +116,11 @@ const ProductController = {
         res.render("index", { productDatalisttemp , flag : '0'});
     },
     renderShooppingPageHandler: (req, res) => {
+        const token = req.cookies["access-token"];
+        productDatalist = checktoken(token);
         cartProductList = productDatalist.filter(product => product.shoppingtag === '1')
-        res.render("shoppingcar", { productDatalist , flag : '1'});
+        console.log(123)
+        res.render("shoppingcar", { cartProductList , flag : '1'});
     },
     renderProductPageHandler: (req, res) => {
         const productId = req.params.productId;
@@ -94,7 +130,7 @@ const ProductController = {
         if (productDetail) {
             res.render("product", { productDetail , flag : '0'});
         } else {
-            res.render("not_found"); // 針對無效的產品ID，可以渲染一個「未找到」的頁面
+            res.render("not_found"); 
         }
     },
 }

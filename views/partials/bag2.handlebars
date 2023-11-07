@@ -3,14 +3,12 @@
     <div class="Bag text-stone-900 text-4xl font-medium">Bag</div>
     </div>
     <ul class="shopbag p-2 self-stretch justify-start items-center gap-4 inline-flex flex-wrap">
-        {{#each productDatalist}}
-            {{#eq shoppingtag "1"}}
-                <li class="BagItem p-2 bg-white rounded-xl justify-start items-center gap-4 flex">
-                <div class="ProductImage w-16 h-16 justify-center items-center flex">
-                    <img class="Image w-16 h-16" src="{{ imageUrlsquare }}" />
-                </div>
-                </li>
-            {{/eq}}
+        {{#each cartProductList}}
+            <li class="BagItem p-2 bg-white rounded-xl justify-start items-center gap-4 flex">
+            <div class="ProductImage w-16 h-16 justify-center items-center flex">
+                <img class="Image w-16 h-16" src="{{ imageUrlsquare }}" />
+            </div>
+            </li>
         {{/each}}
     </ul>
     <div class="Cta w-80 h-32 p-4 flex-col justify-center items-center gap-8 inline-flex">

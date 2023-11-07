@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (num >= 0 && num < productDatalist.length) {
                         productDatalist[num].shoppingtag = "1";
                         renderProducts();
-                        console.log(productDatalist)
                         updateProducts(productDatalist);
                     } else {
                         console.error("Invalid product index");

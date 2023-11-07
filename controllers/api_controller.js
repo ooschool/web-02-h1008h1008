@@ -70,16 +70,13 @@ const ApiController = {
       
     },
     updateProductHandler: (req, res) => {
-        console.log(1232123)
         const updatedProductDataList = req.body; 
         const filteredProducts = updatedProductDataList.filter((product) => product.shoppingtag === "1");
-
         const resultObject = filteredProducts.reduce((accumulator, product) => {
           accumulator[product.productindex] = product.quantity;
           return accumulator;
         }, {});
         
-        console.log("Result JSON:", resultObject);
         const token = req.cookies["access-token"];
         if(token){
           verify(token, 'jwtsecretplschange', async (err, decoded) => {
