@@ -1,12 +1,12 @@
 const bcrypt = require("bcrypt");
-const { createTokens, createresetTokens, validateresetToken } = require("../public/JWT");
+const { createTokens, createresetTokens, validateresetToken } = require("./JWT");
 const nodemailer = require('nodemailer');
-const { Member , Cart ,CartProduct } = require('../public/models');
+const { Member , Cart ,CartProduct } = require('../models/modelsforapp');
 const AuthController = {
-    renderSignUpPageHandler: (req, res) => {
+    renderRegisterPageHandler: (req, res) => {
         res.render("register");
     },
-    renderSignInPageHandler: (req, res) => {
+    renderLoginPageHandler: (req, res) => {
         const token = req.cookies["access-token"];
         if(validateresetToken(token)){
             res.render('index')

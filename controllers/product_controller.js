@@ -1,4 +1,4 @@
-const {  ProductMain , Cart , CartProduct} = require('../public/models');
+const {  ProductMain , Cart , CartProduct} = require('../models/modelsforapp');
 const { verify } = require("jsonwebtoken");
 var productDatalist;
 ProductMain.findAll().then(products => {
@@ -29,7 +29,7 @@ function checktoken(token) {
             if (err) {
             return res.status(401).json({ message: 'Unauthorized' });
             }
-            var memberId = decoded.id;
+            let memberId = decoded.id;
             if(memberId){
                 const Cart1 = await Cart.findOne({ where: { member_id: memberId } });
                 const existtable = await CartProduct.findOne({ where: { cart_id: Cart1.id } });

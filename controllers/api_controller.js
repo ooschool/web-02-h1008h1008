@@ -1,9 +1,9 @@
-const {  ProductMain , CartProduct ,Cart} = require('../public/models');
+const {  ProductMain , CartProduct ,Cart} = require('../models/modelsforapp');
 const { sign, verify } = require("jsonwebtoken");
 
 const ApiController = {
     returnProductHandler: async (req, res) => {
-      var productDatalist;
+      let productDatalist;
       await ProductMain.findAll().then(products => {
         productDatalist = products.map((product, index) => {
           return {
@@ -102,11 +102,6 @@ const ApiController = {
         }
         res.json({ message: "Products updated successfully!" });
     },
-    addtocartHandler: (req, res) => {
-      const updatedProductDataList = req.body; 
-      productDatalist = updatedProductDataList; 
-      res.json({ message: "Products updated successfully!" });
-  },
 }
 
 module.exports = ApiController
