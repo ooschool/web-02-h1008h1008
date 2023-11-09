@@ -29,6 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(data => { 
             productDatalist = data.products; 
+            auth = data.auth;
+            if(auth == 0){
+                const storedResultObject = localStorage.getItem('productDatalist');
+                if (storedResultObject) {
+                    productDatalist = JSON.parse(storedResultObject);
+                }
+            }
             sources = `{{#each productDatalist}}
                 {{#eq shoppingtag "1"}}
                 <li class="BagItem p-2 bg-white rounded-xl justify-start items-center gap-4 flex">
@@ -60,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (num >= 0 && num < productDatalist.length) {
                         productDatalist[num].shoppingtag = "1";
                         renderProducts();
+                        localStorage.setItem('productDatalist', JSON.stringify(productDatalist));
                         updateProducts(productDatalist);
                     } else {
                         console.error("Invalid product index");

@@ -31,7 +31,7 @@ const AuthController = {
         }
     },
     LoginHandler: async (req, res) => {
-        const { emailaddress, password } = req.body;
+        const { emailaddress, password , productDatalist} = req.body;
         const user = await Member.findOne({ where: { email: emailaddress } });
 
         if (!user) {
@@ -44,12 +44,31 @@ const AuthController = {
                     res.json({ message: "Wrong Emailaddress and Password Combination!" });
                 } 
                 else {
-                    console.log(user.id)
                     const existingCart = await Cart.findOne({ where: { member_id: user.id } });
                     if (!existingCart) {
                         await Cart.create({
                             member_id: user.id,
                         });
+                    }
+                    if(productDatalist){
+                        const filteredProducts = productDatalist.filter((product) => product.shoppingtag === "1");
+                        const resultObject = filteredProducts.reduce((accumulator, product) => {
+                        accumulator[product.productindex] = product.quantity;
+                        return accumulator;
+                        }, {});
+                        memberId = user.id;
+                        const Cart1 = await Cart.findOne({ where: { member_id: memberId } });
+                        const existtable = await CartProduct.findOne({ where: { cart_id: Cart1.id } });
+                        if(existtable){
+                            existtable.product_id_and_count = resultObject;
+                            await existtable.save();
+                        }
+                        else{
+                            await CartProduct.create({
+                            cart_id: Cart1.id,
+                            product_id_and_count : resultObject,
+                            }); 
+                        }
                     }
                     const accessToken = createTokens(user);
                     res.cookie("access-token", accessToken, {

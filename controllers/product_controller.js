@@ -46,7 +46,7 @@ async function checktoken(token, productDatalist) {
                     const productCountMap = existtable["product_id_and_count"];
                     productDatalist.forEach((product) => {
                         const productId = product.productindex;
-                        if (productCountMap.hasOwnProperty(productId)) {
+                        if (productCountMap && productCountMap.hasOwnProperty(productId)) {
                             product.shoppingtag = '1';
                             product.quantity = productCountMap[productId];
                         }

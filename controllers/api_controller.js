@@ -39,7 +39,7 @@ const ApiController = {
               const productCountMap = existtable["product_id_and_count"];
               productDatalist.forEach((product) => {
                 const productId = product.productindex;
-                if (productCountMap.hasOwnProperty(productId)) {
+                if ( productCountMap && productCountMap.hasOwnProperty(productId)) {
                   product.shoppingtag = '1';
                   product.quantity = productCountMap[productId];
                 }
@@ -55,6 +55,7 @@ const ApiController = {
             
             const responseData = {
               products: productDatalist,
+              auth:1,
             };
             res.json(responseData);
             }
@@ -63,6 +64,7 @@ const ApiController = {
       else{
         const responseData = {
           products: productDatalist,
+          auth:0,
         };
         res.json(responseData);
         
