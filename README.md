@@ -60,7 +60,7 @@ CREATE DATABASE web02;
 ### 步骤 3:創建table
 使用以下命令來創建table：
 ```bash
-node ./create.js
+npx sequelize db:migrate
 ```
 
 ### 步驟 4: 創建種子資料
