@@ -1,60 +1,72 @@
 const {  ProductMain , Cart , CartProduct} = require('../models/modelsforapp');
 const { verify } = require("jsonwebtoken");
-var productDatalist;
-ProductMain.findAll().then(products => {
-  productDatalist = products.map((product, index) => {
-    return {
-      productLink: `/product/${index}`,
-      imageUrl: product.image_url,
-      imageUrlsquare: "https://via.placeholder.com/64x64",
-      productName: product.name,
-      productDescription: product.description,
-      productDescriptionshort: product.specification,
-      productDescriptionlong: product.specification,
-      productstar: "4.0/5", 
-      productPrice: `$ ${product.price.toFixed(2)}`, 
-      shoppingtag: "0", 
-      productindex: `${index}`,
-      quantity: 1,
-    };
-  });
-  
-}).catch(error => {
-  console.error('Error fetching products:', error);
-});
-function checktoken(token) {
-    if(token){
-        console.log(555)
-        verify(token, 'jwtsecretplschange', async (err, decoded) => {
-            if (err) {
-            return res.status(401).json({ message: 'Unauthorized' });
-            }
-            let memberId = decoded.id;
-            if(memberId){
+async function getproduct(){
+    let productDatalist;
+    await ProductMain.findAll().then(products => {
+        productDatalist = products.map((product, index) => {
+            return {
+            productLink: `/product/${index}`,
+            imageUrl: product.image_url,
+            imageUrlsquare: "https://via.placeholder.com/64x64",
+            productName: product.name,
+            productDescription: product.description,
+            productDescriptionshort: product.specification,
+            productDescriptionlong: product.specification,
+            productstar: "4.0/5", 
+            productPrice: `$ ${product.price.toFixed(2)}`, 
+            shoppingtag: "0", 
+            productindex: `${index}`,
+            quantity: 1,
+            };
+        });
+    }).catch(error => {
+    console.error('Error fetching products:', error);
+    });
+    return productDatalist;
+}
+
+async function checktoken(token, productDatalist) {
+    if (token) {
+        try {
+            const decoded = await new Promise((resolve, reject) => {
+                verify(token, 'jwtsecretplschange', (err, decoded) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(decoded);
+                    }
+                });
+            });
+
+            const memberId = decoded.id;
+            if (memberId) {
                 const Cart1 = await Cart.findOne({ where: { member_id: memberId } });
                 const existtable = await CartProduct.findOne({ where: { cart_id: Cart1.id } });
-                if(existtable){
+                if (existtable) {
                     const productCountMap = existtable["product_id_and_count"];
-                    console.log(productCountMap)
                     productDatalist.forEach((product) => {
                         const productId = product.productindex;
                         if (productCountMap.hasOwnProperty(productId)) {
                             product.shoppingtag = '1';
                             product.quantity = productCountMap[productId];
                         }
-                    }); 
-                }
-                else{
+                    });
+                    return productDatalist;
+                } else {
                     await CartProduct.create({
-                    cart_id: Cart1.id,
-                    product_id_and_count : null,
-                    }); 
+                        cart_id: Cart1.id,
+                        product_id_and_count: null,
+                    });
                 }
             }
-        });
+        } catch (err) {
+            console.error(err);
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
     }
     return productDatalist;
 }
+
 const { Op } = require('sequelize')
 const ProductController = {
     renderIndexPageHandler: async (req, res) =>  {
@@ -115,15 +127,16 @@ const ProductController = {
         }
         res.render("index", { productDatalisttemp , flag : '0'});
     },
-    renderShooppingPageHandler: (req, res) => {
+    renderShooppingPageHandler:  async (req, res) => {
         const token = req.cookies["access-token"];
-        productDatalist = checktoken(token);
-        cartProductList = productDatalist.filter(product => product.shoppingtag === '1')
-        console.log(123)
+        let productDatalist = await getproduct();
+        productDatalistnew = await checktoken(token , productDatalist);
+        cartProductList = productDatalistnew.filter(product => product.shoppingtag === '1')
         res.render("shoppingcar", { cartProductList , flag : '1'});
     },
-    renderProductPageHandler: (req, res) => {
+    renderProductPageHandler: async (req, res) => {
         const productId = req.params.productId;
+        let productDatalist = await getproduct();
         const productDetail = productDatalist.find(
             (product) => product.productindex === productId
         );
