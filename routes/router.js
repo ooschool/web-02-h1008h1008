@@ -2,7 +2,8 @@ const { Router } = require('express')
 const AuthController = require('../controllers/auth_controller.js')
 const ProductController = require('../controllers/product_controller.js')
 const ApiController = require('../controllers/api_controller.js')
-const {  validateToken } = require("../controllers/JWT");
+const PaymentController = require('../controllers/pay_controller.js')
+const {  validateToken } = require("../service/JWT");
 const appRouter = Router()
 
 appRouter.get('/', ProductController.renderIndexPageHandler)
@@ -22,9 +23,10 @@ appRouter.post('/forget', AuthController.forgetHandler)
 appRouter.get('/reset',  AuthController.renderResetPageHandler)
 appRouter.post('/reset', AuthController.RegisterPageHandler)
 appRouter.get('/profile', validateToken, AuthController.renderprofilePageHandler);
-// app.get("/checkout", (req, res) => {
-//   res.render("checkout", { pageTitle: "Checkout Page" });
-// });
+
+appRouter.get('/checkout',  PaymentController.renderpaymentPageHandler);
+appRouter.post('/return',  PaymentController.ReturnHandler);
+appRouter.get('/clientReturn',  PaymentController.renderReturnPageHandler);
 
 module.exports = appRouter
 

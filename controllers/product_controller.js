@@ -1,5 +1,6 @@
 const {  ProductMain , Cart , CartProduct} = require('../models/modelsforapp');
 const { verify } = require("jsonwebtoken");
+const { Op } = require('sequelize')
 async function getproduct(){
     let productDatalist;
     await ProductMain.findAll().then(products => {
@@ -67,7 +68,6 @@ async function checktoken(token, productDatalist) {
     return productDatalist;
 }
 
-const { Op } = require('sequelize')
 const ProductController = {
     renderIndexPageHandler: async (req, res) =>  {
         let productDatalisttemp , products;

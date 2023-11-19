@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const googleOAuth2Client = require('../config/googleOAuth2Client');
+const googleOAuth2Client = require('../service/googleOAuth2Client');
 
 const SCOPES = [
   'https://mail.google.com/',
