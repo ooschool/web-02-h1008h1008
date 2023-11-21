@@ -9,19 +9,19 @@ const createTokens = (user) => {
   return accessToken;
 };
 const createresetTokens = (user) => {
-  const onehr = "60m"
+  const onehr = "60m";
   const accessToken = sign(
     { username: user.username, id: user.id },
-    process.env.jwt_secret,{expiresIn: onehr}
+    process.env.jwt_secret,
+    { expiresIn: onehr }
   );
 
   return accessToken;
 };
 
-
 const validateToken = (req, res, next) => {
   const accessToken = req.cookies["access-token"];
-  console.log(accessToken)
+  console.log(accessToken);
   if (!accessToken)
     return res.status(400).json({ error: "User not Authenticated!" });
 
@@ -37,8 +37,7 @@ const validateToken = (req, res, next) => {
 };
 
 const validateresetToken = (accessToken) => {
-  if (!accessToken)
-    return false;
+  if (!accessToken) return false;
   try {
     const validToken = verify(accessToken, process.env.jwt_secret);
     if (validToken) {
@@ -49,4 +48,9 @@ const validateresetToken = (accessToken) => {
   }
 };
 
-module.exports = { createTokens,createresetTokens, validateToken ,validateresetToken};
+module.exports = {
+  createTokens,
+  createresetTokens,
+  validateToken,
+  validateresetToken,
+};

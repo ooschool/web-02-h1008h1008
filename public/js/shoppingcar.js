@@ -1,71 +1,80 @@
-
 document.addEventListener("DOMContentLoaded", function () {
-    var productDatalist;
-    function handleQuantity(itemElement) {
-        const quantityElement = itemElement.querySelector('.Number');
-        const iconpElements = itemElement.querySelectorAll(".Iconp");
-        const iconmElements = itemElement.querySelectorAll(".Iconm");
-        
-        console.log(iconpElements)
-        iconpElements.forEach((iconpElement, index) => {
-            iconpElement.addEventListener('click', () => {
-            let num = iconpElement.getAttribute("value");
-            num = productDatalist.findIndex(product => product.productindex === num);
-            productDatalist[num].quantity += 1;
-            quantity = productDatalist[num].quantity;
-            quantityElement.textContent = quantity;
-            updateTotalPrice();
-            updateProducts(productDatalist)
-            });
-        });
-        
-        iconmElements.forEach((iconmElement, index) => {
-            iconmElement.addEventListener('click', () => {
-                
-            let num = iconmElement.getAttribute("value");
-            num = productDatalist.findIndex(product => product.productindex === num);
-            if (productDatalist[num].quantity > 0) {
-                productDatalist[num].quantity -= 1;
-                quantity = productDatalist[num].quantity;
-                quantityElement.textContent = quantity;
-                if (num >= 0 && num < productDatalist.length && quantity == 0) {
-                    productDatalist[num].shoppingtag = "0";
-                    const templates = Handlebars.compile(sources);
-            
-                    const containers = document.querySelector('.shopbag'); 
-                    if (containers) {
-                        containers.innerHTML = '';
-                        productDatalist.forEach((productData) => {
-                        const shoppingHTML = templates({ productDatalist: [productData] }); 
-                        containers.innerHTML += shoppingHTML; 
-                        });
-                    } else {
-                        console.error("Container element not found");
-                    }
-                    updateTotalPrice();
-                    itemElement.remove();
-                }
-                updateProducts(productDatalist);
-                localStorage.setItem('productDatalist', JSON.stringify(productDatalist));
-                return;
+  var productDatalist;
+  function handleQuantity(itemElement) {
+    const quantityElement = itemElement.querySelector(".Number");
+    const iconpElements = itemElement.querySelectorAll(".Iconp");
+    const iconmElements = itemElement.querySelectorAll(".Iconm");
+
+    console.log(iconpElements);
+    iconpElements.forEach((iconpElement, index) => {
+      iconpElement.addEventListener("click", () => {
+        let num = iconpElement.getAttribute("value");
+        num = productDatalist.findIndex(
+          (product) => product.productindex === num
+        );
+        productDatalist[num].quantity += 1;
+        quantity = productDatalist[num].quantity;
+        quantityElement.textContent = quantity;
+        updateTotalPrice();
+        updateProducts(productDatalist);
+      });
+    });
+
+    iconmElements.forEach((iconmElement, index) => {
+      iconmElement.addEventListener("click", () => {
+        let num = iconmElement.getAttribute("value");
+        num = productDatalist.findIndex(
+          (product) => product.productindex === num
+        );
+        if (productDatalist[num].quantity > 0) {
+          productDatalist[num].quantity -= 1;
+          quantity = productDatalist[num].quantity;
+          quantityElement.textContent = quantity;
+          if (num >= 0 && num < productDatalist.length && quantity == 0) {
+            productDatalist[num].shoppingtag = "0";
+            const templates = Handlebars.compile(sources);
+
+            const containers = document.querySelector(".shopbag");
+            if (containers) {
+              containers.innerHTML = "";
+              productDatalist.forEach((productData) => {
+                const shoppingHTML = templates({
+                  productDatalist: [productData],
+                });
+                containers.innerHTML += shoppingHTML;
+              });
+            } else {
+              console.error("Container element not found");
             }
-            });
-        });
-    }   
-    function updateTotalPrice() {
-        const totalpriceElement = document.querySelector('.totalprice');
-        let totalPrice = 0;
-        productDatalist.forEach((productData) => {
-            const price = parseFloat(productData.productPrice.replace('$', '').trim());
-            const quantity = productData.quantity;
-            const subtotal = price * quantity;
-            totalPrice += subtotal;
-        });
-        const formattedTotalPrice = '$ ' + totalPrice.toFixed(2);
-        totalpriceElement.textContent = formattedTotalPrice;
-    }
-    async function renderProducts() {
-        sources = `{{#each productDatalist}}
+            updateTotalPrice();
+            itemElement.remove();
+          }
+          updateProducts(productDatalist);
+          localStorage.setItem(
+            "productDatalist",
+            JSON.stringify(productDatalist)
+          );
+          return;
+        }
+      });
+    });
+  }
+  function updateTotalPrice() {
+    const totalpriceElement = document.querySelector(".totalprice");
+    let totalPrice = 0;
+    productDatalist.forEach((productData) => {
+      const price = parseFloat(
+        productData.productPrice.replace("$", "").trim()
+      );
+      const quantity = productData.quantity;
+      const subtotal = price * quantity;
+      totalPrice += subtotal;
+    });
+    const formattedTotalPrice = "$ " + totalPrice.toFixed(2);
+    totalpriceElement.textContent = formattedTotalPrice;
+  }
+  async function renderProducts() {
+    sources = `{{#each productDatalist}}
                 {{#eq shoppingtag "1"}}
                 <li class="BagItem p-2 bg-white rounded-xl justify-start items-center gap-4 flex">
                     <div class="ProductImage w-16 h-16 justify-center items-center flex">
@@ -75,18 +84,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 {{/eq}}
             {{/each}}`;
 
-        const templates = Handlebars.compile(sources);
-        const containers = document.querySelector('.shopbag');
-        if (containers) {
-            containers.innerHTML = '';  
-            productDatalist.forEach((productData) => {
-                const shoppingHTML = templates({ productDatalist: [productData] });
-                containers.innerHTML += shoppingHTML;
-            });
-        } else {
-            console.error("Container element not found");
-        }
-        sources1 = `{{#each productDatalist}}
+    const templates = Handlebars.compile(sources);
+    const containers = document.querySelector(".shopbag");
+    if (containers) {
+      containers.innerHTML = "";
+      productDatalist.forEach((productData) => {
+        const shoppingHTML = templates({ productDatalist: [productData] });
+        containers.innerHTML += shoppingHTML;
+      });
+    } else {
+      console.error("Container element not found");
+    }
+    sources1 = `{{#each productDatalist}}
         <div class="ItemInBag w-full self-stretch px-6 py-8 bg-white rounded-3xl justify-start items-start gap-4 inline-flex mb-4">
           <div class="ProductImage w-52 h-64 flex-col justify-center items-center inline-flex">
             <img class="Image w-52 h-80" src="https://via.placeholder.com/204x280" />
@@ -141,67 +150,71 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         {{/each}}`;
 
-        const templates1 = Handlebars.compile(sources1);
-        const containers1 = document.querySelector('.mainproduct');
-        if (containers1 && !auth) {
-            containers1.innerHTML = '';  
-            productDatalist.forEach((productData) => {
-                const shoppingHTML = templates1({ productDatalist: [productData] });
-                containers1.innerHTML += shoppingHTML;
-            });
-        } else {
-            console.error("Container element not found");
-        }
-        productDatalist = productDatalist.filter(product => product.shoppingtag === '1')
-        const itemElements = document.querySelectorAll('.ItemInBag');
-        itemElements.forEach((itemElement) => {
-            handleQuantity(itemElement);
-            updateTotalPrice();
-        });
+    const templates1 = Handlebars.compile(sources1);
+    const containers1 = document.querySelector(".mainproduct");
+    if (containers1 && !auth) {
+      containers1.innerHTML = "";
+      productDatalist.forEach((productData) => {
+        const shoppingHTML = templates1({ productDatalist: [productData] });
+        containers1.innerHTML += shoppingHTML;
+      });
+    } else {
+      console.error("Container element not found");
     }
-    async function updateProducts(productDataList) {
-        try {
-            const response = await fetch('/api/update-products', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(productDataList)
-            });
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-    
-            const data = await response.json();
-            console.log('Full Response:', data);  
-            console.log(data.message); 
-        } catch (error) {
-            console.error("There was an error updating the product data on the server:", error);
-        }
+    productDatalist = productDatalist.filter(
+      (product) => product.shoppingtag === "1"
+    );
+    const itemElements = document.querySelectorAll(".ItemInBag");
+    itemElements.forEach((itemElement) => {
+      handleQuantity(itemElement);
+      updateTotalPrice();
+    });
+  }
+  async function updateProducts(productDataList) {
+    try {
+      const response = await fetch("/api/update-products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(productDataList),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Full Response:", data);
+      console.log(data.message);
+    } catch (error) {
+      console.error(
+        "There was an error updating the product data on the server:",
+        error
+      );
     }
-    fetch('/api/products')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => { 
-            productDatalist = data.products; 
-            auth = data.auth;
-            if(auth == 0){
-                const storedResultObject = localStorage.getItem('productDatalist');
-                if (storedResultObject) {
-                    productDatalist = JSON.parse(storedResultObject);  
-                    renderProducts();
-                }
-            }
-            
-            renderProducts();
-        })
-        .catch(error => {
-        console.error("There was an error fetching the product data:", error);
-        });
-    
+  }
+  fetch("/api/products")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      productDatalist = data.products;
+      auth = data.auth;
+      if (auth == 0) {
+        const storedResultObject = localStorage.getItem("productDatalist");
+        if (storedResultObject) {
+          productDatalist = JSON.parse(storedResultObject);
+          renderProducts();
+        }
+      }
+
+      renderProducts();
+    })
+    .catch((error) => {
+      console.error("There was an error fetching the product data:", error);
+    });
 });
