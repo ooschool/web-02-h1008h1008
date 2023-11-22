@@ -32,7 +32,7 @@ const ApiController = {
         if (err) {
           return res.status(401).json({ message: "Unauthorized" });
         }
-        var memberId = decoded.id;
+        let memberId = decoded.id;
         if (memberId) {
           const Cart1 = await Cart.findOne({ where: { member_id: memberId } });
           const existtable = await CartProduct.findOne({
@@ -88,7 +88,7 @@ const ApiController = {
         if (err) {
           return res.status(401).json({ message: "Unauthorized" });
         }
-        var memberId = decoded.id;
+        let memberId = decoded.id;
         if (memberId) {
           const Cart1 = await Cart.findOne({ where: { member_id: memberId } });
           const existtable = await CartProduct.findOne({

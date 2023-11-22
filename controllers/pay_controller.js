@@ -95,16 +95,16 @@ const PayController = {
         let productDatalist = await getproduct();
         productDatalistnew = await checktoken(token, productDatalist);
         cartProductList = productDatalistnew.filter(product => product.shoppingtag === '1')
-        var totalPrice = 0;
-        var productstr = "";
-        for (var i = 0; i < cartProductList.length; i++) {
-            var product = cartProductList[i];
-            var price = parseFloat(product.productPrice.replace('$', ''));
-            var quantity = product.quantity;
+        let totalPrice = 0;
+        let productstr = "";
+        for (let i = 0; i < cartProductList.length; i++) {
+            let product = cartProductList[i];
+            let price = parseFloat(product.productPrice.replace('$', ''));
+            let quantity = product.quantity;
             productstr += product.productName + " ";
             totalPrice += price * quantity;
         }
-        var totalPriceStr = totalPrice.toString();
+        let totalPriceStr = totalPrice.toString();
         const MerchantTradeDate = new Date().toLocaleString('zh-TW', {
             year: 'numeric',
             month: '2-digit',
