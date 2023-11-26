@@ -72,7 +72,7 @@ async function checktoken(token, productDatalist) {
   return productDatalist;
 }
 
-const ProductController = {
+const product_controller = {
   renderIndexPageHandler: async (req, res) => {
     let productDatalisttemp, products;
     page = req.query.page;
@@ -151,4 +151,4 @@ const ProductController = {
   },
 };
 
-module.exports = ProductController;
+module.exports = product_controller;

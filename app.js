@@ -4,8 +4,11 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const publicPath = path.join(__dirname, "./views");
-const appRouter = require("./routes/router");
-const authRouter = require("./routes/auth");
+const product_router = require("./routes/product_router");
+const authen_router = require("./routes/authen_router");
+const api_router = require("./routes/api_router");
+const pay_router = require("./routes/pay_router");
+const auth_router = require("./routes/auth_router");
 const app = express();
 const port = 3000;
 var session = require("express-session");
@@ -35,8 +38,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.json());
-app.use(appRouter);
-app.use("/auth", authRouter);
+app.use("/auth", auth_router);
+app.use("/api", api_router);
+app.use("/authen", authen_router);
+app.use("/", pay_router);
+app.use("/",product_router);
 app.use("/", express.static(publicPath));
 
 app.listen(port, () => {

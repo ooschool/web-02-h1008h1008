@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const confirmPassword = document.getElementById("conpwd").value;
 
       if (password == confirmPassword) {
-        fetch("/register", {
+        fetch("/authen/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
           })
           .then((data) => {
             alert("Register success");
-            window.location.href = "/login";
+            window.location.href = "/authen/login";
           })
           .catch((error) => {
             console.log(error);

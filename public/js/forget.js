@@ -3,7 +3,7 @@ document.getElementById("resetbtn").addEventListener("click", function (e) {
 
   const emailaddress = document.getElementById("emailaddress").value;
 
-  fetch("/forget", {
+  fetch("/authen/forget", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

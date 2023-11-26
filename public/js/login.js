@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (storedResultObject) {
         productDatalist = JSON.parse(storedResultObject);
       }
-      fetch("/login", {
+      fetch("/authen/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

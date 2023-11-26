@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const { Router } = require('express')
+var auth_router = Router();
 
 const googleOAuth2Client = require('../service/googleOAuth2Client');
 
@@ -7,7 +7,7 @@ const SCOPES = [
   'https://mail.google.com/',
 ];
 
-router.get('/login', (req, res) => {
+auth_router.get('/login', (req, res) => {
   const authUrl = googleOAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
@@ -15,7 +15,7 @@ router.get('/login', (req, res) => {
   res.redirect(authUrl);
 });
 
-router.get('/google/callback', async (req, res) => {
+auth_router.get('/google/callback', async (req, res) => {
   const code = req.query.code;
   try {
     const { tokens } = await googleOAuth2Client.getToken(code)
@@ -30,4 +30,4 @@ router.get('/google/callback', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = auth_router;

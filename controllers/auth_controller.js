@@ -6,14 +6,14 @@ const {
 } = require("../service/JWT");
 const nodemailer = require("nodemailer");
 const { Member, Cart, CartProduct } = require("../models/modelsforapp");
-const AuthController = {
+const auth_controller = {
   renderRegisterPageHandler: (req, res) => {
     res.render("register");
   },
   renderLoginPageHandler: (req, res) => {
     const token = req.cookies["access-token"];
     if (validateresetToken(token)) {
-      res.render("index");
+      res.render("payment", {  flag: "0" });
     } else {
       res.render("login");
     }
@@ -147,7 +147,7 @@ const AuthController = {
       text:
         "點擊以下連結以重設您的密碼：\n\n" +
         process.env.HOST +
-        "/reset?token=" +
+        "/authen/reset?token=" +
         accessToken +
         "\n\n如果您沒有提出重設密碼的請求，請忽略此郵件。",
     };
@@ -162,8 +162,8 @@ const AuthController = {
     });
   },
   renderprofilePageHandler: async (req, res) => {
-    res.render("index");
+    res.render("payment");
   },
 };
 
-module.exports = AuthController;
+module.exports = auth_controller;

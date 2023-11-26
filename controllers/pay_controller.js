@@ -89,7 +89,7 @@ async function checktoken(token, productDatalist) {
     return productDatalist;
 }
 
-const PayController = {
+const pay_controller = {
     renderpaymentPageHandler: async (req, res) => {
         const token = req.cookies["access-token"];
         let productDatalist = await getproduct();
@@ -160,4 +160,4 @@ const PayController = {
     },
 }
 
-module.exports = PayController
+module.exports = pay_controller

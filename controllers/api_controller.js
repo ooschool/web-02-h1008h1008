@@ -1,7 +1,7 @@
 const { ProductMain, CartProduct, Cart } = require("../models/modelsforapp");
 const { sign, verify } = require("jsonwebtoken");
 
-const ApiController = {
+const api_controller = {
   returnProductHandler: async (req, res) => {
     let productDatalist;
     await ProductMain.findAll()
@@ -110,4 +110,4 @@ const ApiController = {
   },
 };
 
-module.exports = ApiController;
+module.exports = api_controller;
