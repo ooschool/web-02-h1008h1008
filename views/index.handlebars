@@ -12,6 +12,23 @@
       </div>
     </div>
     <div class="ContentArea self-stretch h-screen py-2 flex-col justify-start items-start">
+      <form id="myForm" class="myform fixed inset-0 w-full h-full flex items-center justify-center bg-opacity-50 bg-gray-900 hidden">
+            <div class="form bg-white p-4 w-80 rounded shadow-md mx-auto flex flex-col items-center">
+              <img class="Image w-60 h-72" src="{{ productDetail.imageUrl }}" />
+              <div class="AppleWatch text-stone-900 text-4xl font-bold">{{ productDetail.productName }}</div>
+              <div class="Series5Se text-stone-900 text-opacity-50 text-xl font-medium">{{ productDetail.productDescription }}</div>
+              <div class="flex items-center mt-4">
+                  <label for="quantity" class="text-stone-900 font-medium text-lg mr-2">quatity：</label>
+                  <select id="quantity" name="quantity" class="border rounded py-1 px-2">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                  </select>
+              </div>
+              <div id = "updatebutton" class="Button text-white text-lg font-medium mt-4 rounded-lg" value={{ productDetail.productindex }}>Add to Bag</div>
+          </div>
+        </form>
       <ul class="Row01 self-stretch justify-center items-center gap-4 inline-flex flex-wrap">
         {{#each productDatalisttemp}}
           <li class="ItemCard p-4 rounded-3xl flex-col justify-center items-start gap-2 inline-flex">
@@ -27,7 +44,7 @@
               <div class="SmallDescription text-zinc-600 text-base font-normal">{{ productDescription }}</div>
               <div class="Action self-stretch p-2 justify-between items-center gap-2.5 inline-flex">
                 <div class="999 text-stone-900 text-xl font-medium">{{ productPrice }}</div>
-                <div class="Button p-2 bg-stone-900 rounded-lg justify-center items-center gap-2 flex" id="plus" value={{productindex}}>
+                <div id = "button" class="Button1 p-2 bg-stone-900 rounded-lg justify-center items-center gap-2 flex"  value= "1" >
                   <div class="Icon w-6 h-6 relative">
                     <div class="Center">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus text-white w-6 h-6" viewBox="0 0 16 16">

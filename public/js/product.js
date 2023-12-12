@@ -66,9 +66,20 @@ document.addEventListener("DOMContentLoaded", function () {
       var buttons = document.querySelectorAll(".Button");
       buttons.forEach(function (button) {
         button.addEventListener("click", function () {
-          var num = button.getAttribute("value");
+          var form = document.getElementById("myForm");
+          form.style.display = "block";
+        });
+      });
+      var updateButton = document.getElementById('updatebutton');
+      var selectElement = document.getElementById('quantity');
+      updateButton.addEventListener('click', function() {
+          var num = updateButton.getAttribute("value");
+          var form = document.getElementById("myForm");
+          form.style.display = "none";
           if (num >= 0 && num < productDatalist.length) {
             productDatalist[num].shoppingtag = "1";
+            productDatalist[num].quantity = +selectElement.value;
+            console.log(productDatalist[num])
             renderProducts();
             localStorage.setItem(
               "productDatalist",
@@ -79,7 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             console.error("Invalid product index");
           }
-        });
       });
     })
     .catch((error) => {

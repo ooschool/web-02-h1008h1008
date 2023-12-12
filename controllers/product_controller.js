@@ -82,7 +82,7 @@ const product_controller = {
     let limits = req.query.limit;
     limit = parseInt(limits);
     if (!limit) {
-      limit = 6;
+      limit = 10;
     }
     const offset = (page - 1) * limit;
     const keyword = req.query.search?.trim();

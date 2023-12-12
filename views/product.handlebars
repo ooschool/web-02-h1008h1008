@@ -4,6 +4,25 @@
     <div class="Link text-stone-900 text-xl font-normal">Back</div>
   </div>
   <div class="mainproduct">
+        <form id="myForm" class="myform fixed inset-0 w-full h-full flex items-center justify-center bg-opacity-50 bg-gray-900 hidden">
+            <div class="form bg-white p-4 w-80 rounded shadow-md mx-auto flex flex-col items-center">
+              <img class="Image w-60 h-72" src="{{ productDetail.imageUrl }}" />
+              <div class="AppleWatch text-stone-900 text-4xl font-bold">{{ productDetail.productName }}</div>
+              <div class="Series5Se text-stone-900 text-opacity-50 text-xl font-medium">{{ productDetail.productDescription }}</div>
+              <div class="flex items-center mt-4">
+                  <label for="quantity" class="text-stone-900 font-medium text-lg mr-2">quatity：</label>
+                  <select id="quantity" name="quantity" class="border rounded py-1 px-2">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                  </select>
+              </div>
+              <div id = "updatebutton" class="Button text-white text-lg font-medium mt-4 rounded-lg" id="plus" value={{ productDetail.productindex }}>Add to Bag</div>
+          </div>
+        </form>
+
+
         <div class="TopArea w-400 justify-start items-start gap-6 inline-flex">
           <div class="ImageArea p-2 justify-start items-start gap-4 flex">
             <div class="MainImage p-2 bg-white rounded-xl justify-start items-start gap-2.5 flex">
